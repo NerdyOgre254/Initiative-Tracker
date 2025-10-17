@@ -1,5 +1,9 @@
 import { useState } from "react";
 
+const Header = () => {};
+
+const Combatant = () => {};
+
 const App = () => {
   const turns = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const combatants = [
@@ -27,6 +31,13 @@ const App = () => {
             <tr key={index}>
               <td> {combatant.name}</td>
               <td> {combatant.initiative}</td>
+              {turns.map((turn, index) => (
+                <td>
+                  <input type="checkbox" />
+                  <br />
+                  <input type="text" />
+                </td>
+              ))}
             </tr>
           ))}
         </tbody>
