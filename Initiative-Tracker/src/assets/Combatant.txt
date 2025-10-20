@@ -1,0 +1,5 @@
+"Xan" 1 27 1
+"Malgra" 4 30 3
+"Presarium" 3 25 2
+"Darach" 2 50 4
+"Fyrehunters" 1.5 12 2
