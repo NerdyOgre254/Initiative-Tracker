@@ -70,8 +70,18 @@ const App = () => {
           ))}
         </tbody>
       </table>
+      <NextTurnButton />
     </div>
   );
+};
+
+const NextTurnButton = () => {
+  const handleClick = () => {
+    //find the next unused turn and tick that checkbox
+
+    console.log("Button Clicked");
+  };
+  return <button onClick={handleClick}>Next Turn</button>;
 };
 
 export default App;
