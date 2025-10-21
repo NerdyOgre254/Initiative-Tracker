@@ -78,7 +78,10 @@ const App = () => {
 const NextTurnButton = () => {
   const handleClick = () => {
     //find the next unused turn and tick that checkbox
-
+    //get the combatants and turns
+    /*
+    
+    */
     console.log("Button Clicked");
   };
   return <button onClick={handleClick}>Next Turn</button>;
