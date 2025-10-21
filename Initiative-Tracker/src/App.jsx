@@ -38,50 +38,36 @@ const Combatant = ({ name, initiative, hp, ac, turns }) => {
   );
 };
 
-//grabs characters from file
-const CombatantGrabber = () => {
-  //get the file location
-  const [fileContent, setFileContent] = useState('');
-
-  useEffect(()=> {
-    fetch('../assets/Combatant.txt')
-    .then(response => response.text())
-    .then(text=> {
-      setFileContent(text);
-    })
-    .catch(error => {
-      console.error('Error fetching file', error);
-    });
-  }, []);
-  return(
-    <>
-      <h2>file content:</h2>
-      <pre>{fileContent}</pre>
-    </>
-  )
-};
-
 const App = () => {
-  const turns = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const combatants = [
-    { name: "Xan", initiative: "1" },
-    { name: "Malgra", initiative: "2" },
-    { name: "Fyrehunters", initiative: "3" },
-    { name: "Presarium", initiative: "4" },
-  ];
+  const turns = Array.from({ length: 10 }, (_, i) => i + 1);
+  const [combatants, setCombatants] = useState([
+    { name: "Xan", initiative: 1, hp: 5, ac: 10, turns: turns },
+    { name: "Malgra", initiative: 2, hp: 10, ac: 15, turns: turns },
+    { name: "Fyrehunters", initiative: 3, hp: 15, ac: 20, turns: turns },
+    { name: "Presarium", initiative: 4, hp: 20, ac: 25, turns: turns },
+  ]);
+
+  useEffect(() => {
+    const sortedCombatants = [...combatants].sort((a, b) => b.initiative - a.initiative);
+    setCombatants(sortedCombatants);
+  }, []);
 
   return (
     <div className="init-tracker">
       <h1>Initiative and Status Tracker</h1>
-      <CombatantGrabber/>
       <table>
         <Header turns={turns} />
         <tbody>
-          <Combatant name={"Xan"} initiative={1} hp={27} ac={1} turns={turns} />
-          <Combatant name={"Malgra"} initiative={2} hp={30} ac={2} turns={turns} />
-          <Combatant name={"Fyrehunters"} initiative={2} hp={33} ac={1} turns={turns}/>
-          <Combatant name={"Presarium"} initiative={4} hp={36} ac={4} turns={turns}/>
-          
+          {combatants.map((combatant, index) => (
+            <Combatant
+              key={index}
+              name={combatant.name}
+              initiative={combatant.initiative}
+              hp={combatant.hp}
+              ac={combatant.ac}
+              turns={combatant.turns}
+            />
+          ))}
         </tbody>
       </table>
     </div>
@@ -104,4 +90,11 @@ export default App;
               ))}
             </tr>
           ))}
+*/
+
+/*
+<Combatant name={"Xan"} initiative={1} hp={27} ac={1} turns={turns} />
+          <Combatant name={"Malgra"} initiative={2} hp={30} ac={2} turns={turns} />
+          <Combatant name={"Fyrehunters"} initiative={2} hp={33} ac={1} turns={turns} />
+          <Combatant name={"Presarium"} initiative={4} hp={36} ac={4} turns={turns} />
 */
