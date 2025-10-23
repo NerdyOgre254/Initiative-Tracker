@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import "./App.css";
 
 //header for turn structure table
 const Header = ({ turns }) => {
   return (
     <thead>
-      <tr>
+      <tr className="table-header">
         <td>Name</td>
         <td>Initiative</td>
         <td>HP</td>
@@ -14,6 +15,32 @@ const Header = ({ turns }) => {
         ))}
       </tr>
     </thead>
+  );
+};
+
+//component for scaling text input box under each checkbox
+//TODO: text box does not scale the column it's in.
+const ScalingInput = () => {
+  const [text, setText] = useState("");
+  const [inputWidth, setInputWidth] = useState(50);
+  const spanRef = useRef(null);
+
+  useEffect(() => {
+    if (spanRef.current) {
+      const textWidth = spanRef.current.offsetWidth;
+      const newWidth = Math.max(50, Math.min(textWidth + 30, 600));
+      setInputWidth(newWidth);
+    }
+  }, [text]);
+
+  return (
+    <input
+      type="text"
+      className="status-box"
+      value={text}
+      onChange={(e) => setText(e.target.value)}
+      style={{ width: `${inputWidth}px` }}
+    />
   );
 };
 
@@ -28,9 +55,9 @@ const Combatant = ({ name, initiative, hp, ac, turns }) => {
         <td>{ac}</td>
         {turns.map((turn, index) => (
           <td>
-            <input type="checkbox" />
+            <input className="turn-checkbox" type="checkbox" />
             <br />
-            <input type="text" />
+            <ScalingInput />
           </td>
         ))}
       </tr>
@@ -54,8 +81,8 @@ const App = () => {
 
   return (
     <div className="init-tracker">
-      <h1>Initiative and Status Tracker</h1>
-      <table>
+      <h1 className="title">Initiative and Status Tracker</h1>
+      <table className="table-container">
         <Header turns={turns} />
         <tbody>
           {combatants.map((combatant, index) => (
@@ -70,29 +97,15 @@ const App = () => {
           ))}
         </tbody>
       </table>
-      <NextTurnButton />
     </div>
   );
 };
 
-const NextTurnButton = () => {
-  const handleClick = () => {
-    //find the next unused turn and tick that checkbox
-    //get the combatants and turns
-    /*
-    for (turns)
-     for (combatants)
-      if (turn[i] is unclicked)
-        set turn[i] to clicked
-        exit the loop
-    */
-
-    console.log("Button Clicked");
-  };
-  return <button onClick={handleClick}>Next Turn</button>;
-};
-
 export default App;
+
+/*
+Code timeout zones here
+*/
 
 /*
 {combatants.map((combatant, index) => (

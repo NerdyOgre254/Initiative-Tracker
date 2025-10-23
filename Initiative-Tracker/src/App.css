@@ -1,1 +1,31 @@
 @import "tailwindcss";
+
+/*
+add a . in front to access className
+don't add it for accessing basic elements like <div>
+
+don't forget to save the .jsx file when running it as npm run dev.
+*/
+
+@layer components {
+  .table-container {
+    @apply border-2;
+  }
+
+  .table-header {
+    @apply font-bold bg-gray-200;
+  }
+
+  .title {
+    @apply font-bold text-4xl;
+  }
+
+  td {
+    @apply border-2 p-2;
+  }
+
+  .status-box {
+    @apply border border-gray-300 bg-white px-3 py-2 rounded text-gray-900
+    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+  }
+}
