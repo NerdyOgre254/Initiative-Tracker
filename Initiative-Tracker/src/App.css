@@ -28,4 +28,15 @@ don't forget to save the .jsx file when running it as npm run dev.
     @apply border border-gray-300 bg-white px-3 py-2 rounded text-gray-900
     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
   }
+
+  label input {
+    @apply border border-gray-300 bg-white px-3 py-2 rounded text-gray-900
+    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+  }
+
+  button {
+    @apply border border-gray-300 bg-white px-3 py-2 rounded text-gray-900
+    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent 
+    hover:bg-emerald-500;
+  }
 }

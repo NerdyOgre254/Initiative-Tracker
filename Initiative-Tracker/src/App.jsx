@@ -44,40 +44,116 @@ const ScalingInput = () => {
   );
 };
 
-//component for inserting combatant
-const Combatant = ({ name, initiative, hp, ac, turns }) => {
+//subsection for adding combatants
+const CombatantAdder = ({ onAddCombatant }) => {
+  const [combatant, setCombatant] = useState({
+    characterName: "",
+    initiative: "",
+    hp: 0,
+    ac: 0,
+  });
+
+  //manages holding state of typed inputs
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCombatant((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  //creates a formatted combatant on click of button
+  const handleClick = () => {
+    const formattedCombatant = {
+      characterName: combatant.characterName,
+      initiative: Number(combatant.initiative),
+      hp: Number(combatant.hp),
+      ac: Number(combatant.ac),
+    };
+
+    //call parent function
+    onAddCombatant(formattedCombatant);
+
+    //form reset at end of
+    setCombatant({
+      characterName: "",
+      initiative: "",
+      hp: 0,
+      ac: 0,
+    });
+  };
+
+  //value in each input feeds the data upward
   return (
     <>
-      <tr>
-        <td>{name}</td>
-        <td>{initiative}</td>
-        <td>{hp}</td>
-        <td>{ac}</td>
-        {turns.map((turn, index) => (
-          <td>
-            <input className="turn-checkbox" type="checkbox" />
-            <br />
-            <ScalingInput />
-          </td>
-        ))}
-      </tr>
+      <label>
+        Character Name:
+        <input
+          type="text"
+          required
+          name="characterName"
+          value={combatant.characterName}
+          onChange={handleChange}
+        />
+      </label>
+      <br />
+      <label>
+        Initiative:
+        <input
+          type="text"
+          required
+          name="initiative"
+          value={combatant.initiative}
+          onChange={handleChange}
+        />
+      </label>
+      <br />
+      <label>
+        HP:
+        <input type="text" name="hp" value={combatant.hp} onChange={handleChange} />
+      </label>
+      <br />
+      <label>
+        AC:
+        <input type="text" name="ac" value={combatant.ac} onChange={handleChange} />
+      </label>
+      <br />
+      <button onClick={handleClick}>Add Character</button>
     </>
+  );
+};
+
+//component for inserting combatant into data structure
+//note that previous version had <> in render which caused no key indexing
+const Combatant = ({ id, name, initiative, hp, ac, turns }) => {
+  return (
+    <tr>
+      <td>{name}</td>
+      <td>{initiative}</td>
+      <td>{hp}</td>
+      <td>{ac}</td>
+      {turns.map((turn, index) => (
+        <td key={index}>
+          <input className="turn-checkbox" type="checkbox" />
+          <br />
+          <ScalingInput />
+        </td>
+      ))}
+    </tr>
   );
 };
 
 const App = () => {
   const turns = Array.from({ length: 10 }, (_, i) => i + 1);
-  const [combatants, setCombatants] = useState([
-    { name: "Xan", initiative: 1, hp: 5, ac: 10, turns: turns },
-    { name: "Malgra", initiative: 2, hp: 10, ac: 15, turns: turns },
-    { name: "Fyrehunters", initiative: 3, hp: 15, ac: 20, turns: turns },
-    { name: "Presarium", initiative: 4, hp: 20, ac: 25, turns: turns },
-  ]);
+  const [combatants, setCombatants] = useState([]);
 
-  useEffect(() => {
-    const sortedCombatants = [...combatants].sort((a, b) => b.initiative - a.initiative);
-    setCombatants(sortedCombatants);
-  }, []);
+  const addCombatant = (newCombatant) => {
+    setCombatants((prev) => {
+      const updated = [...prev, newCombatant];
+      // Sort by initiative (highest first)
+      return updated.sort((a, b) => b.initiative - a.initiative);
+    });
+  };
 
   return (
     <div className="init-tracker">
@@ -88,15 +164,17 @@ const App = () => {
           {combatants.map((combatant, index) => (
             <Combatant
               key={index}
-              name={combatant.name}
+              name={combatant.characterName}
               initiative={combatant.initiative}
               hp={combatant.hp}
               ac={combatant.ac}
-              turns={combatant.turns}
+              turns={turns}
             />
           ))}
         </tbody>
       </table>
+      <br />
+      <CombatantAdder onAddCombatant={addCombatant} />
     </div>
   );
 };
