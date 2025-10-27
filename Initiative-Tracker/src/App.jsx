@@ -85,7 +85,7 @@ const CombatantAdder = ({ onAddCombatant }) => {
 
   //value in each input feeds the data upward
   return (
-    <div className="add-character-box">
+    <div className="adder-container">
       <table>
         <tbody>
           <tr>
@@ -163,22 +163,38 @@ const CombatantRemover = ({ combatants, onRemove }) => {
   };
 
   return (
-    <label>
-      Remove Combatant:
-      <select
-        name="selectedCombatant"
-        value={selectedCombatant}
-        onChange={(e) => setSelectedCombatant(e.target.value)}
-      >
-        <option value="None">---</option>
-        {combatants.map((combatant) => (
-          <option key={combatant.characterName} value={combatant.characterName}>
-            {combatant.characterName}
-          </option>
-        ))}
-      </select>
-      <button onClick={handleClick}>Remove!</button>
-    </label>
+    <div className="remover-container">
+      <label>
+        Remove Combatant:
+        <select
+          name="selectedCombatant"
+          value={selectedCombatant}
+          onChange={(e) => setSelectedCombatant(e.target.value)}
+        >
+          <option value="None">---</option>
+          {combatants.map((combatant) => (
+            <option key={combatant.characterName} value={combatant.characterName}>
+              {combatant.characterName}
+            </option>
+          ))}
+        </select>
+        <button onClick={handleClick}>Remove!</button>
+      </label>
+    </div>
+  );
+};
+
+const Sidebar = () => {
+  return (
+    <div className="faq">
+      <b>What's this?</b>
+      <p>A tool for managing initiative and status in TTRPGs</p>
+      <b>How do I use it?</b>
+      <p>
+        Type name and initiative into the boxes (HP and AC not necessary), click 'Add Character'
+      </p>
+      <p>or click a character in the dropdown menu and click 'Remove' </p>
+    </div>
   );
 };
 
@@ -219,6 +235,7 @@ const App = () => {
       <br />
       <CombatantAdder onAddCombatant={addCombatant} />
       <CombatantRemover combatants={combatants} onRemove={handleRemoveCombatant} />
+      <Sidebar />
     </div>
   );
 };

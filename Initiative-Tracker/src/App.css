@@ -40,11 +40,15 @@ don't forget to save the .jsx file when running it as npm run dev.
     hover:bg-emerald-500;
   }
 
-  .adder-container {
-    @apply border border-emerald-300;
+  .faq {
+    @apply border border-2 border-black bg-amber-200 w-1/5;
   }
 
-  input {
-    @apply justify-end;
+  .remover-container {
+    @apply border border-2 border-black bg-amber-200 w-1/5;
+  }
+
+  .adder-container {
+    @apply border border-2 border-black bg-amber-200 w-1.5;
   }
 }
