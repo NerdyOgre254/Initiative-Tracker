@@ -39,4 +39,12 @@ don't forget to save the .jsx file when running it as npm run dev.
     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent 
     hover:bg-emerald-500;
   }
+
+  .adder-container {
+    @apply border border-emerald-300;
+  }
+
+  input {
+    @apply justify-end;
+  }
 }

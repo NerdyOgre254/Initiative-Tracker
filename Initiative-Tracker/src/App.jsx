@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 import "./App.css";
 
 //header for turn structure table
@@ -85,47 +85,55 @@ const CombatantAdder = ({ onAddCombatant }) => {
 
   //value in each input feeds the data upward
   return (
-    <>
-      <label>
-        Character Name:
-        <input
-          type="text"
-          required
-          name="characterName"
-          value={combatant.characterName}
-          onChange={handleChange}
-        />
-      </label>
-      <br />
-      <label>
-        Initiative:
-        <input
-          type="text"
-          required
-          name="initiative"
-          value={combatant.initiative}
-          onChange={handleChange}
-        />
-      </label>
-      <br />
-      <label>
-        HP:
-        <input type="text" name="hp" value={combatant.hp} onChange={handleChange} />
-      </label>
-      <br />
-      <label>
-        AC:
-        <input type="text" name="ac" value={combatant.ac} onChange={handleChange} />
-      </label>
-      <br />
+    <div className="add-character-box">
+      <table>
+        <tbody>
+          <tr>
+            <td>Character Name</td>
+            <td>
+              <input
+                type="text"
+                required
+                name="characterName"
+                value={combatant.characterName}
+                onChange={handleChange}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>Initiative</td>
+            <td>
+              <input
+                type="text"
+                required
+                name="initiative"
+                value={combatant.initiative}
+                onChange={handleChange}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>HP</td>
+            <td>
+              <input type="text" name="hp" value={combatant.hp} onChange={handleChange} />
+            </td>
+          </tr>
+          <tr>
+            <td>AC</td>
+            <td>
+              <input type="text" name="ac" value={combatant.ac} onChange={handleChange} />
+            </td>
+          </tr>
+        </tbody>
+      </table>
       <button onClick={handleClick}>Add Character</button>
-    </>
+    </div>
   );
 };
 
 //component for inserting combatant into data structure
 //note that previous version had <> in render which caused no key indexing
-const Combatant = ({ id, name, initiative, hp, ac, turns }) => {
+const Combatant = ({ name, initiative, hp, ac, turns }) => {
   return (
     <tr>
       <td>{name}</td>
@@ -143,6 +151,37 @@ const Combatant = ({ id, name, initiative, hp, ac, turns }) => {
   );
 };
 
+//component for removing combatant from data structure, dropdown menu with confirmation box
+const CombatantRemover = ({ combatants, onRemove }) => {
+  const [selectedCombatant, setSelectedCombatant] = useState("None");
+
+  const handleClick = () => {
+    if (selectedCombatant !== "None") {
+      onRemove(selectedCombatant);
+      setSelectedCombatant("None");
+    }
+  };
+
+  return (
+    <label>
+      Remove Combatant:
+      <select
+        name="selectedCombatant"
+        value={selectedCombatant}
+        onChange={(e) => setSelectedCombatant(e.target.value)}
+      >
+        <option value="None">---</option>
+        {combatants.map((combatant) => (
+          <option key={combatant.characterName} value={combatant.characterName}>
+            {combatant.characterName}
+          </option>
+        ))}
+      </select>
+      <button onClick={handleClick}>Remove!</button>
+    </label>
+  );
+};
+
 const App = () => {
   const turns = Array.from({ length: 10 }, (_, i) => i + 1);
   const [combatants, setCombatants] = useState([]);
@@ -153,6 +192,10 @@ const App = () => {
       // Sort by initiative (highest first)
       return updated.sort((a, b) => b.initiative - a.initiative);
     });
+  };
+
+  const handleRemoveCombatant = (nameToRemove) => {
+    setCombatants(combatants.filter((c) => c.characterName !== nameToRemove));
   };
 
   return (
@@ -175,6 +218,7 @@ const App = () => {
       </table>
       <br />
       <CombatantAdder onAddCombatant={addCombatant} />
+      <CombatantRemover combatants={combatants} onRemove={handleRemoveCombatant} />
     </div>
   );
 };
